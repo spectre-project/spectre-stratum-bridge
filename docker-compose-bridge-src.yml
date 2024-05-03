@@ -1,0 +1,16 @@
+services:
+  spr_bridge:
+    build:
+      context: .
+      no_cache: true
+    container_name: spr_bridge
+    restart: unless-stopped
+    user: "0"
+    command:
+      - '-stats=false'
+      - '-spectre=host.docker.internal:18110'
+    ports:
+      - 5555:5555
+      - 2114:2114
+    extra_hosts:
+      - host.docker.internal:host-gateway
