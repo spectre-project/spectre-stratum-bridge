@@ -15,9 +15,9 @@ import (
 
 // static value definitions to avoid overhead in diff translations
 var (
-	maxTarget = big.NewFloat(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+	maxTarget = big.NewFloat(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
 	minHash   = new(big.Float).Quo(new(big.Float).SetMantExp(big.NewFloat(1), 256), maxTarget)
-	bigGig    = big.NewFloat(1e9)
+	bigGig    = big.NewFloat(1e3)
 )
 
 // Basically three different ways of representing difficulty, each used on

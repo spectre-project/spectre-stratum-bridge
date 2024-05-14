@@ -10,6 +10,8 @@ import (
 	"sync"
 	"time"
 
+	// "encoding/binary"
+
 	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"github.com/spectre-project/spectred/app/appmessage"
 	"github.com/spectre-project/spectred/domain/consensus/model/externalapi"
@@ -167,6 +169,7 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 
 	//ctx.Logger.Debug(submitInfo.block.Header.BlueScore, " submit ", submitInfo.noncestr)
 	state := GetMiningState(ctx)
+
 	if state.useBigJob {
 		submitInfo.nonceVal, err = strconv.ParseUint(submitInfo.noncestr, 16, 64)
 		if err != nil {
@@ -204,8 +207,27 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 	}
 	mutableHeader := converted.Header.ToMutable()
 	mutableHeader.SetNonce(submitInfo.nonceVal)
+
 	powState := pow.NewState(mutableHeader)
 	powValue := powState.CalculateProofOfWorkValue()
+
+	// zeroes := make([]byte, 32)
+
+	// ctx.Logger.Warn(fmt.Sprintf("Reconstructed timestamp = %x", powState.Timestamp))
+
+	// b := make([]byte, 8)
+	// binary.LittleEndian.PutUint64(b, uint64(powState.Timestamp))
+
+	
+	// b2 := make([]byte, 8)
+	// binary.LittleEndian.PutUint64(b2, uint64(powState.Nonce))
+
+	// templateString := fmt.Sprintf("%x%x%x%x",
+	// 	powState.PrePowHash.ByteSlice(),
+	// 	b,
+	// 	zeroes[:],
+	// 	b2,
+	// )
 
 	// The block hash must be less or equal than the claimed target.
 	if powValue.Cmp(&powState.Target) <= 0 {
@@ -214,6 +236,9 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 		}
 	} else if powValue.Cmp(state.stratumDiff.targetValue) >= 0 {
 		ctx.Logger.Warn("weak block")
+		ctx.Logger.Warn(fmt.Sprintf("Net Target: %s", powState.Target.String()))
+		ctx.Logger.Warn(fmt.Sprintf("Stratum Target: %s", state.stratumDiff.targetValue.String()))
+		ctx.Logger.Warn(fmt.Sprintf("PowValue: %s", powValue.String()))
 		RecordWeakShare(ctx)
 		return ctx.ReplyLowDiffShare(event.Id)
 	}
@@ -291,7 +316,7 @@ func (sh *shareHandler) startStatsThread() error {
 		totalRate := float64(0)
 		for _, v := range sh.stats {
 			// print stats
-			rate := GetAverageHashrateGHs(v)
+			rate := GetAverageHashrateKHs(v)
 			totalRate += rate
 			rateStr := stringifyHashrate(rate)
 			ratioStr := fmt.Sprintf("%d/%d/%d", v.SharesFound.Load(), v.StaleShares.Load(), v.InvalidShares.Load())
@@ -311,27 +336,27 @@ func (sh *shareHandler) startStatsThread() error {
 	}
 }
 
-func GetAverageHashrateGHs(stats *WorkStats) float64 {
+func GetAverageHashrateKHs(stats *WorkStats) float64 {
 	return stats.SharesDiff.Load() / time.Since(stats.StartTime).Seconds()
 }
 
-func stringifyHashrate(ghs float64) string {
-	unitStrings := [...]string{"K", "M", "G", "T", "P", "E", "Z", "Y"}
+func stringifyHashrate(khs float64) string {
+	unitStrings := [...]string{"", "", "K", "M", "G", "T", "P", "E", "Z", "Y"}
 	var unit string
 	var hr float64
 
-	if ghs * 1000 < 1 {
-		hr = ghs * 1000 * 1000
+	if khs * 1000 < 1 {
+		hr = khs * 1000 * 1000
 		unit = unitStrings[0]
-	} else if ghs < 1 {
-		hr = ghs * 1000
+	} else if khs < 1 {
+		hr = khs * 1000
 		unit = unitStrings[1]
-	} else if ghs < 1000 {
-		hr = ghs
+	} else if khs < 1000 {
+		hr = khs
 		unit = unitStrings[2]
 	} else {
 		for i, u := range unitStrings[3:] {
-			hr = ghs / (float64(i) * 1000)
+			hr = khs / (float64(i) * 1000)
 			if hr < 1000 {
 				break
 			}

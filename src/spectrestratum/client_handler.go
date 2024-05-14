@@ -146,7 +146,7 @@ func (c *clientListener) NewBlockAvailable(kapi *SpectreApi) {
 				jobParams = append(jobParams, GenerateLargeJobParams(header, uint64(template.Block.Header.Timestamp)))
 			} else {
 				jobParams = append(jobParams, GenerateJobHeader(header))
-				jobParams = append(jobParams, template.Block.Header.Timestamp)
+				jobParams = append(jobParams, uint64(template.Block.Header.Timestamp))
 			}
 
 			// // normal notify flow
