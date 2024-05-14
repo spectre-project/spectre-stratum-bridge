@@ -16,7 +16,7 @@ Shares-based work allocation with miner-like periodic stat output:
  ghostface      |       4.17KH/s |          3/0/0 |            0 |      21m17s
 -------------------------------------------------------------------------------
                 |       4.17KH/s |          3/0/0 |            0 |      22m31s
-======================================================== spr_bridge_v0.3.14 ===
+======================================================== spr_bridge_v0.3.15 ===
 ```
 
 ## Variable difficulty engine (vardiff)
