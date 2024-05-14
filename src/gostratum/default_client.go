@@ -5,9 +5,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/spectre-project/spectred/util"
 	"github.com/mattn/go-colorable"
 	"github.com/pkg/errors"
+	"github.com/spectre-project/spectred/util"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

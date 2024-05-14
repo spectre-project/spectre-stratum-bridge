@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"github.com/mattn/go-colorable"
+	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )

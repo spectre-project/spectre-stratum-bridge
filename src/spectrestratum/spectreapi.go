@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"github.com/spectre-project/spectred/app/appmessage"
 	"github.com/spectre-project/spectred/infrastructure/network/rpcclient"
-	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 

@@ -9,8 +9,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"github.com/pkg/errors"
+	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"go.uber.org/zap"
 )
 

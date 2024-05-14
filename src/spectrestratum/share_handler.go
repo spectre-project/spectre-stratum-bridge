@@ -12,13 +12,13 @@ import (
 
 	// "encoding/binary"
 
+	"github.com/pkg/errors"
 	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"github.com/spectre-project/spectred/app/appmessage"
 	"github.com/spectre-project/spectred/domain/consensus/model/externalapi"
 	"github.com/spectre-project/spectred/domain/consensus/utils/consensushashing"
 	"github.com/spectre-project/spectred/domain/consensus/utils/pow"
 	"github.com/spectre-project/spectred/infrastructure/network/rpcclient"
-	"github.com/pkg/errors"
 	"go.uber.org/atomic"
 	"go.uber.org/zap"
 )
@@ -218,7 +218,6 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 	// b := make([]byte, 8)
 	// binary.LittleEndian.PutUint64(b, uint64(powState.Timestamp))
 
-	
 	// b2 := make([]byte, 8)
 	// binary.LittleEndian.PutUint64(b2, uint64(powState.Nonce))
 
@@ -345,7 +344,7 @@ func stringifyHashrate(khs float64) string {
 	var unit string
 	var hr float64
 
-	if khs * 1000 < 1 {
+	if khs*1000 < 1 {
 		hr = khs * 1000 * 1000
 		unit = unitStrings[0]
 	} else if khs < 1 {
