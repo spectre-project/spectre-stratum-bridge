@@ -23,7 +23,7 @@ type BridgeConfig struct {
 	PrintStats      bool          `yaml:"print_stats"`
 	UseLogFile      bool          `yaml:"log_to_file"`
 	HealthCheckPort string        `yaml:"health_check_port"`
-	SoloMining 			bool          `yaml:"solo_mining"`
+	SoloMining      bool          `yaml:"solo_mining"`
 	BlockWaitTime   time.Duration `yaml:"block_wait_time"`
 	MinShareDiff    uint          `yaml:"min_share_diff"`
 	VarDiff         bool          `yaml:"var_diff"`

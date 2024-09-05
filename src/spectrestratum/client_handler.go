@@ -128,7 +128,7 @@ func (c *clientListener) NewBlockAvailable(kapi *SpectreApi, soloMining bool) {
 				// first pass through send config/default difficulty
 				state.stratumDiff = newSpectreDiff()
 				state.stratumDiff.setDiffValue(c.minShareDiff)
-				if (!soloMining) { 
+				if !soloMining {
 					sendClientDiff(client, state)
 				}
 				c.shareHandler.setClientVardiff(client, c.minShareDiff)
@@ -136,13 +136,13 @@ func (c *clientListener) NewBlockAvailable(kapi *SpectreApi, soloMining bool) {
 
 			varDiff := TargetToDiff(&state.bigDiff)
 			c.shareHandler.setSoloDiff(varDiff)
-			if (!soloMining) { 
-				varDiff = c.shareHandler.getClientVardiff(client) 
+			if !soloMining {
+				varDiff = c.shareHandler.getClientVardiff(client)
 			}
 
 			if varDiff != state.stratumDiff.diffValue {
 				// send updated vardiff
-				if (!soloMining) {
+				if !soloMining {
 					client.Logger.Info(fmt.Sprintf("changing diff from %f to %f", state.stratumDiff.diffValue, varDiff))
 				}
 				state.stratumDiff.setDiffValue(varDiff)

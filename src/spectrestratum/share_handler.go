@@ -42,7 +42,7 @@ type WorkStats struct {
 
 type shareHandler struct {
 	spectre      *rpcclient.RPCClient
-	soloDiff		 float64
+	soloDiff     float64
 	stats        map[string]*WorkStats
 	statsLock    sync.Mutex
 	overall      WorkStats
@@ -239,7 +239,7 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 			return err
 		}
 	} else if powValue.Cmp(state.stratumDiff.targetValue) >= 0 {
-		if (soloMining) {
+		if soloMining {
 			ctx.Logger.Warn("weak block")
 		} else {
 			ctx.Logger.Warn("weak share")
@@ -322,7 +322,6 @@ func (sh *shareHandler) startStatsThread() error {
 		str += "-------------------------------------------------------------------------------\n"
 		var lines []string
 		totalRate := float64(0)
-
 
 		for _, v := range sh.stats {
 			// print stats
