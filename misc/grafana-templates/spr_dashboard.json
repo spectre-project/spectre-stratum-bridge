@@ -1678,7 +1678,7 @@
             "uid": "wFbInMnVk"
           },
           "editorMode": "code",
-          "expr": "spr_network_difficulty_gauge / 1e12",
+          "expr": "spr_network_difficulty_gauge / 1e9",
           "hide": false,
           "legendFormat": "difficulty",
           "range": true,

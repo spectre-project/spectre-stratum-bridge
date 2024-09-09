@@ -46,6 +46,14 @@ func DiffToTarget(diff float64) *big.Int {
 	return t
 }
 
+func TargetToDiff(target *big.Int) float64 {
+	targetFloat := new(big.Float).SetInt(target)
+	diff := new(big.Float).Quo(maxTarget, targetFloat)
+
+	diffFloat, _ := diff.Float64()
+	return diffFloat
+}
+
 func DiffToHash(diff float64) float64 {
 	hashVal := new(big.Float).Mul(minHash, big.NewFloat(diff))
 	hashVal.Quo(hashVal, bigGig)

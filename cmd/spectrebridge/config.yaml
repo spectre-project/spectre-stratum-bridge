@@ -46,6 +46,10 @@ shares_per_min: 4
 # var_diff_stats: if true, print vardiff engine stats to the log every 10s
 var_diff_stats: false
 
+# solo_mining: if true, stratum vardiff calculations will be ignored in favor of
+# using network difficulty
+solo_mining: false
+
 # block_wait_time: time to wait since last new block message from spectred before
 # manually requesting a new block. Examples are '500ms', '3s', '1m', etc.
 block_wait_time: 250ms
