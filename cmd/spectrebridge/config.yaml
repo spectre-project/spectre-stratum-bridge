@@ -1,23 +1,23 @@
 # stratum_listen_port: the port that will be listening for incoming stratum
 # traffic
-# Note `:PORT` format is needed if not specifiying a specific ip range
+# Note `:PORT` format is needed if not specifying a specific ip range
 stratum_port: :5555
 
 # spectred_address: address/port of the rpc server for spectred, typically 18110
-# For a list of public nodes, run `nslookup mainnet-dnsseed.daglabs-dev.com`
-# uncomment for to use a public node
+# For a list of public nodes, run `nslookup mainnet-dnsseed-1.spectre-network.org`
+# uncomment to use a public node
 # spectred_address: 46.17.104.200:18110
 spectred_address: localhost:18110
 
 # min_share_diff: only accept shares of the specified difficulty (or higher)
-# from the miner(s).  Higher values will reduce the number of shares submitted,
+# from the miner(s). Higher values will reduce the number of shares submitted,
 # thereby reducing network traffic and server load, while lower values will
 # increase the number of shares submitted, thereby reducing the amount of time
 # needed for accurate hashrate measurements.
 #
 # If var_diff is enabled, min_share_diff will be the starting difficulty.
 #
-# Default value is chosen to accomodate current top of the line CPUs. If you
+# Default value is chosen to accommodate current top of the line CPUs. If you
 # don't want to change the default to match your device(s), the vardiff engine
 # will adjust to an appropriate diff for lower hashrate devices within a few
 # minutes.
@@ -34,8 +34,8 @@ var_diff: true
 # Default value is chosen to allow for 95% confidence in measurement accuracy,
 # which affects fidelity of difficulty update decisions, as well as hashrate
 # stability (measured 1hr avg hashrate should be within +/- 10% of actual, with
-# the noted confidence.)  Higher values will result in better vardiff engine
-# performance and increased hashrate stability.  Lower values will cause
+# the noted confidence.) Higher values will result in better vardiff engine
+# performance and increased hashrate stability. Lower values will cause
 # vardiff to behave more erratically, while measured hashrate will display
 # larger variations.
 #
@@ -57,7 +57,7 @@ block_wait_time: 250ms
 # extranonce_size: size in bytes of extranonce, from 0 (no extranonce) to 3.
 # With no extranonce (0), all clients will search through the same nonce-space,
 # therefore performing duplicate work unless the miner(s) implement client
-# side nonce randomizing.  More bytes allow for more clients with unique
+# side nonce randomizing. More bytes allow for more clients with unique
 # nonce-spaces (i.e. no overlapping work), but reduces the per client
 # overall nonce-space (though with 1s block times, this shouldn't really
 # be a concern).
@@ -75,5 +75,5 @@ log_to_file: true
 # see readme for summary on how to get prom up and running using docker
 # you can get the raw metrics (along with default golang metrics) using
 # `curl http://localhost:{prom_port}/metrics`
-# Note `:PORT` format is needed if not specifiying a specific ip range
+# Note `:PORT` format is needed if not specifying a specific ip range
 prom_port: :2114

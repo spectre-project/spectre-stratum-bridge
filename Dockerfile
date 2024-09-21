@@ -1,5 +1,5 @@
 # Many thanks to original author Brandon Smith (onemorebsmith).
-FROM golang:1.19.1 as builder
+FROM golang:1.23.1 as builder
 
 LABEL org.opencontainers.image.description="Dockerized Spectre Stratum Bridge"
 LABEL org.opencontainers.image.authors="Spectre"
