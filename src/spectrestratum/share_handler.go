@@ -10,8 +10,6 @@ import (
 	"sync"
 	"time"
 
-	// "encoding/binary"
-
 	"github.com/pkg/errors"
 	"github.com/spectre-project/spectre-stratum-bridge/src/gostratum"
 	"github.com/spectre-project/spectred/app/appmessage"
@@ -189,22 +187,24 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 		}
 	}
 	stats := sh.getCreateStats(ctx)
-	// if err := sh.checkStales(ctx, submitInfo); err != nil {
-	// 	if err == ErrDupeShare {
-	// 		ctx.Logger.Info("dupe share "+submitInfo.noncestr, ctx.WorkerName, ctx.WalletAddr)
-	// 		atomic.AddInt64(&stats.StaleShares, 1)
-	// 		RecordDupeShare(ctx)
-	// 		return ctx.ReplyDupeShare(event.Id)
-	// 	} else if errors.Is(err, ErrStaleShare) {
-	// 		ctx.Logger.Info(err.Error(), ctx.WorkerName, ctx.WalletAddr)
-	// 		atomic.AddInt64(&stats.StaleShares, 1)
-	// 		RecordStaleShare(ctx)
-	// 		return ctx.ReplyStaleShare(event.Id)
-	// 	}
-	// 	// unknown error somehow
-	// 	ctx.Logger.Error("unknown error during check stales: ", err.Error())
-	// 	return ctx.ReplyBadShare(event.Id)
-	// }
+	if err := sh.checkStales(ctx, submitInfo); err != nil {
+		if err == ErrDupeShare {
+			ctx.Logger.Warn("duplicate share: "+submitInfo.noncestr)
+			RecordDupeShare(ctx)
+			stats.InvalidShares.Add(1)
+			sh.overall.InvalidShares.Add(1)
+			return ctx.ReplyDupeShare(event.Id)
+		} else if errors.Is(err, ErrStaleShare) {
+			ctx.Logger.Warn("stale share")
+			stats.StaleShares.Add(1)
+			sh.overall.StaleShares.Add(1)
+			RecordStaleShare(ctx)
+			return ctx.ReplyStaleShare(event.Id)
+		}
+		// unknown error somehow
+		ctx.Logger.Error("unknown error during check stales")
+		return ctx.ReplyBadShare(event.Id)
+	}
 
 	converted, err := appmessage.RPCBlockToDomainBlock(submitInfo.block)
 	if err != nil {
@@ -215,23 +215,6 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 
 	powState := pow.NewState(mutableHeader)
 	powValue := powState.CalculateProofOfWorkValue()
-
-	// zeroes := make([]byte, 32)
-
-	// ctx.Logger.Warn(fmt.Sprintf("Reconstructed timestamp = %x", powState.Timestamp))
-
-	// b := make([]byte, 8)
-	// binary.LittleEndian.PutUint64(b, uint64(powState.Timestamp))
-
-	// b2 := make([]byte, 8)
-	// binary.LittleEndian.PutUint64(b2, uint64(powState.Nonce))
-
-	// templateString := fmt.Sprintf("%x%x%x%x",
-	// 	powState.PrePowHash.ByteSlice(),
-	// 	b,
-	// 	zeroes[:],
-	// 	b2,
-	// )
 
 	// The block hash must be less or equal than the claimed target.
 	if powValue.Cmp(&powState.Target) <= 0 {
@@ -244,9 +227,11 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 		} else {
 			ctx.Logger.Warn("weak share")
 		}
-		ctx.Logger.Warn(fmt.Sprintf("Net Target: %s", powState.Target.String()))
-		ctx.Logger.Warn(fmt.Sprintf("Stratum Target: %s", state.stratumDiff.targetValue.String()))
-		ctx.Logger.Warn(fmt.Sprintf("PowValue: %s", powValue.String()))
+		ctx.Logger.Warn(fmt.Sprintf("Net Target: %s\n", powState.Target.String()))
+		ctx.Logger.Warn(fmt.Sprintf("Stratum Target: %s\n", state.stratumDiff.targetValue.String()))
+		ctx.Logger.Warn(fmt.Sprintf("PowValue: %064x\n", powValue.Bytes()))
+		stats.InvalidShares.Add(1)
+		sh.overall.InvalidShares.Add(1)
 		RecordWeakShare(ctx)
 		return ctx.ReplyLowDiffShare(event.Id)
 	}
@@ -340,7 +325,7 @@ func (sh *shareHandler) startStatsThread() error {
 		str += fmt.Sprintf(" Total          | %14.14s | %14.14s | %12d | %11s",
 			rateStr, ratioStr, sh.overall.BlocksFound.Load(), time.Since(start).Round(time.Second))
 		str += "\n-------------------------------------------------------------------------------\n"
-		str += " Network Hashrate: " + stringifyHashrate(DiffToHash(sh.soloDiff))
+		str += " Est. Network Hashrate: " + stringifyHashrate(DiffToHash(sh.soloDiff))
 		str += "\n======================================================== spr_bridge_" + version + " ===\n"
 		// sh.statsLock.Unlock()
 		log.Println(str)

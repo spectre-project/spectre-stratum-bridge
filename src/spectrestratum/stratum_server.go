@@ -13,8 +13,8 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const version = "v0.3.16"
-const minBlockWaitTime = 3 * time.Second
+const version = "v0.3.17"
+const minBlockWaitTime = 250 * time.Millisecond
 
 type BridgeConfig struct {
 	StratumPort     string        `yaml:"stratum_port"`
@@ -64,7 +64,7 @@ func ListenAndServe(cfg BridgeConfig) error {
 	}
 
 	blockWaitTime := cfg.BlockWaitTime
-	if blockWaitTime == 0 {
+	if blockWaitTime < minBlockWaitTime {
 		blockWaitTime = minBlockWaitTime
 	}
 	sprApi, err := NewSpectreAPI(cfg.RPCServer, blockWaitTime, logger)
