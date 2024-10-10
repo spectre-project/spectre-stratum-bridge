@@ -1,5 +1,10 @@
 # Spectre Stratum Adapter
 
+[![GitHub release](https://img.shields.io/github/v/release/spectre-project/spectre-stratum-bridge.svg)](https://github.com/spectre-project/spectre-stratum-bridge/releases)
+[![LICENSE](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/spectre-project/spectre-stratum-bridge/blob/main/LICENSE)
+[![GitHub downloads](https://img.shields.io/github/downloads/spectre-project/spectre-stratum-bridge/total.svg)](https://github.com/spectre-project/spectre-stratum-bridge/releases)
+[![Join the Spectre Discord Server](https://img.shields.io/discord/1233113243741061240.svg?label=&logo=discord&logoColor=ffffff&color=5865F2)](https://discord.com/invite/FZPYpwszcF)
+
 This is a lightweight daemon that allows mining to a local (or remote)
 spectre node using stratum-base miners. It is up to the community to
 build a stratum based miner, the original built-in miner is using gRPC
@@ -13,10 +18,12 @@ Shares-based work allocation with miner-like periodic stat output:
 ===============================================================================
   worker name   |  avg hashrate  |   acc/stl/inv  |    blocks    |    uptime
 -------------------------------------------------------------------------------
- ghostface      |       4.17KH/s |          3/0/0 |            0 |      21m17s
+ ghostface      |      12.62KH/s |          6/0/0 |            6 |   17h36m38s
 -------------------------------------------------------------------------------
-                |       4.17KH/s |          3/0/0 |            0 |      22m31s
-======================================================== spr_bridge_v0.3.15 ===
+ Total          |      12.62KH/s |          6/0/0 |            6 |   17h36m46s
+-------------------------------------------------------------------------------
+ Network Hashrate: 138.40MH/s
+======================================================== spr_bridge_v0.3.16 ===
 ```
 
 ## Variable difficulty engine (vardiff)
@@ -28,6 +35,17 @@ will automatically be decided for each one. Default settings target
 difficulty adjustments, and stable measured hashrates (1hr avg
 hashrates within +/- 10% of actual). The minimum share difficulty is 12
 and optimized for CPUs mining SpectreX.
+
+## Solo mining mode
+
+`solo_mining`: If set to `true`, stratum's variable difficulty (vardiff)
+calculations are bypassed, and network difficulty is used instead.
+Over several days, the hashrate will essentially reflect your raw luck, as only 
+successfully mined blocks impact the hashrate estimates. This makes it a useful
+way to gauge luck. `:)`
+
+If you prefer more frequent hashrate updates based on submitted shares, you'll
+need to leave `solo_mining` set to `false`.
 
 ## Grafana UI
 
@@ -134,6 +152,6 @@ the better alternative.
 
 ## Kudos
 
-* https://github.com/KaffinPX/KStratum
-* https://github.com/onemorebsmith/kaspa-stratum-bridge
-* https://github.com/rdugan/kaspa-stratum-bridge
+- https://github.com/KaffinPX/KStratum
+- https://github.com/onemorebsmith/kaspa-stratum-bridge
+- https://github.com/rdugan/kaspa-stratum-bridge

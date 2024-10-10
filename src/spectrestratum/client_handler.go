@@ -83,7 +83,7 @@ func (c *clientListener) OnDisconnect(ctx *gostratum.StratumContext) {
 	RecordDisconnect(ctx)
 }
 
-func (c *clientListener) NewBlockAvailable(kapi *SpectreApi, soloMining bool) {
+func (c *clientListener) NewBlockAvailable(sprApi *SpectreApi, soloMining bool) {
 	c.clientLock.Lock()
 	addresses := make([]string, 0, len(c.clients))
 	for _, cl := range c.clients {
@@ -101,7 +101,7 @@ func (c *clientListener) NewBlockAvailable(kapi *SpectreApi, soloMining bool) {
 				}
 				return
 			}
-			template, err := kapi.GetBlockTemplate(client)
+			template, err := sprApi.GetBlockTemplate(client)
 			if err != nil {
 				if strings.Contains(err.Error(), "Could not decode address") {
 					RecordWorkerError(client.WalletAddr, ErrInvalidAddressFmt)
@@ -186,7 +186,7 @@ func (c *clientListener) NewBlockAvailable(kapi *SpectreApi, soloMining bool) {
 		c.lastBalanceCheck = time.Now()
 		if len(addresses) > 0 {
 			go func() {
-				balances, err := kapi.spectred.GetBalancesByAddresses(addresses)
+				balances, err := sprApi.spectred.GetBalancesByAddresses(addresses)
 				if err != nil {
 					c.logger.Warn("failed to get balances from spectre, prom stats will be out of date", zap.Error(err))
 					return

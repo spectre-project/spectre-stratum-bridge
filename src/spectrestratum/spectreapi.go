@@ -35,28 +35,28 @@ func NewSpectreAPI(address string, blockWaitTime time.Duration, logger *zap.Suga
 	}, nil
 }
 
-func (ks *SpectreApi) Start(ctx context.Context, blockCb func()) {
-	ks.waitForSync(true)
-	go ks.startBlockTemplateListener(ctx, blockCb)
-	go ks.startStatsThread(ctx)
+func (sprApi *SpectreApi) Start(ctx context.Context, blockCb func()) {
+	sprApi.waitForSync(true)
+	go sprApi.startBlockTemplateListener(ctx, blockCb)
+	go sprApi.startStatsThread(ctx)
 }
 
-func (ks *SpectreApi) startStatsThread(ctx context.Context) {
+func (sprApi *SpectreApi) startStatsThread(ctx context.Context) {
 	ticker := time.NewTicker(30 * time.Second)
 	for {
 		select {
 		case <-ctx.Done():
-			ks.logger.Warn("context cancelled, stopping stats thread")
+			sprApi.logger.Warn("context cancelled, stopping stats thread")
 			return
 		case <-ticker.C:
-			dagResponse, err := ks.spectred.GetBlockDAGInfo()
+			dagResponse, err := sprApi.spectred.GetBlockDAGInfo()
 			if err != nil {
-				ks.logger.Warn("failed to get network hashrate from spectre, prom stats will be out of date", zap.Error(err))
+				sprApi.logger.Warn("failed to get network hashrate from spectre, prom stats will be out of date", zap.Error(err))
 				continue
 			}
-			response, err := ks.spectred.EstimateNetworkHashesPerSecond(dagResponse.TipHashes[0], 1000)
+			response, err := sprApi.spectred.EstimateNetworkHashesPerSecond(dagResponse.TipHashes[0], 1000)
 			if err != nil {
-				ks.logger.Warn("failed to get network hashrate from spectre, prom stats will be out of date", zap.Error(err))
+				sprApi.logger.Warn("failed to get network hashrate from spectre, prom stats will be out of date", zap.Error(err))
 				continue
 			}
 			RecordNetworkStats(response.NetworkHashesPerSecond, dagResponse.BlockCount, dagResponse.Difficulty)
@@ -64,74 +64,74 @@ func (ks *SpectreApi) startStatsThread(ctx context.Context) {
 	}
 }
 
-func (ks *SpectreApi) reconnect() error {
-	if ks.spectred != nil {
-		return ks.spectred.Reconnect()
+func (sprApi *SpectreApi) reconnect() error {
+	if sprApi.spectred != nil {
+		return sprApi.spectred.Reconnect()
 	}
 
-	client, err := rpcclient.NewRPCClient(ks.address)
+	client, err := rpcclient.NewRPCClient(sprApi.address)
 	if err != nil {
 		return err
 	}
-	ks.spectred = client
+	sprApi.spectred = client
 	return nil
 }
 
-func (s *SpectreApi) waitForSync(verbose bool) error {
+func (sprApi *SpectreApi) waitForSync(verbose bool) error {
 	if verbose {
-		s.logger.Info("checking spectred sync state")
+		sprApi.logger.Info("checking spectred sync state")
 	}
 	for {
-		clientInfo, err := s.spectred.GetInfo()
+		clientInfo, err := sprApi.spectred.GetInfo()
 		if err != nil {
-			return errors.Wrapf(err, "error fetching server info from spectred @ %s", s.address)
+			return errors.Wrapf(err, "error fetching server info from spectred @ %s", sprApi.address)
 		}
 		if clientInfo.IsSynced {
 			break
 		}
-		s.logger.Warn("Spectre is not synced, waiting for sync before starting bridge")
+		sprApi.logger.Warn("Spectre is not synced, waiting for sync before starting bridge")
 		time.Sleep(5 * time.Second)
 	}
 	if verbose {
-		s.logger.Info("spectred synced, starting server")
+		sprApi.logger.Info("spectred synced, starting server")
 	}
 	return nil
 }
 
-func (s *SpectreApi) startBlockTemplateListener(ctx context.Context, blockReadyCb func()) {
+func (sprApi *SpectreApi) startBlockTemplateListener(ctx context.Context, blockReadyCb func()) {
 	blockReadyChan := make(chan bool)
-	err := s.spectred.RegisterForNewBlockTemplateNotifications(func(_ *appmessage.NewBlockTemplateNotificationMessage) {
+	err := sprApi.spectred.RegisterForNewBlockTemplateNotifications(func(_ *appmessage.NewBlockTemplateNotificationMessage) {
 		blockReadyChan <- true
 	})
 	if err != nil {
-		s.logger.Error("fatal: failed to register for block notifications from spectre")
+		sprApi.logger.Error("fatal: failed to register for block notifications from spectre")
 	}
 
-	ticker := time.NewTicker(s.blockWaitTime)
+	ticker := time.NewTicker(sprApi.blockWaitTime)
 	for {
-		if err := s.waitForSync(false); err != nil {
-			s.logger.Error("error checking spectred sync state, attempting reconnect: ", err)
-			if err := s.reconnect(); err != nil {
-				s.logger.Error("error reconnecting to spectred, waiting before retry: ", err)
+		if err := sprApi.waitForSync(false); err != nil {
+			sprApi.logger.Error("error checking spectred sync state, attempting reconnect: ", err)
+			if err := sprApi.reconnect(); err != nil {
+				sprApi.logger.Error("error reconnecting to spectred, waiting before retry: ", err)
 				time.Sleep(5 * time.Second)
 			}
 		}
 		select {
 		case <-ctx.Done():
-			s.logger.Warn("context cancelled, stopping block update listener")
+			sprApi.logger.Warn("context cancelled, stopping block update listener")
 			return
 		case <-blockReadyChan:
 			blockReadyCb()
-			ticker.Reset(s.blockWaitTime)
+			ticker.Reset(sprApi.blockWaitTime)
 		case <-ticker.C: // timeout, manually check for new blocks
 			blockReadyCb()
 		}
 	}
 }
 
-func (ks *SpectreApi) GetBlockTemplate(
+func (sprApi *SpectreApi) GetBlockTemplate(
 	client *gostratum.StratumContext) (*appmessage.GetBlockTemplateResponseMessage, error) {
-	template, err := ks.spectred.GetBlockTemplate(client.WalletAddr,
+	template, err := sprApi.spectred.GetBlockTemplate(client.WalletAddr,
 		fmt.Sprintf(`'%s' via spectre-project/spectre-stratum-bridge_%s`, client.RemoteApp, version))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed fetching new block template from spectre")
