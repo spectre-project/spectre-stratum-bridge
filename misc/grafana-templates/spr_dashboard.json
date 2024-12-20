@@ -1,11 +1,60 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.4.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
         "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
+          "type": "datasource",
+          "uid": "grafana"
         },
         "enable": true,
         "hide": true,
@@ -24,14 +73,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 20,
+  "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -61,6 +109,8 @@
       },
       "id": 16,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -71,14 +121,15 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -95,7 +146,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -130,6 +181,7 @@
         "graphMode": "area",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -137,15 +189,17 @@
           "fields": "",
           "values": false
         },
+        "showPercentChange": false,
         "text": {},
-        "textMode": "value"
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM(rate(spr_valid_share_diff_counter{wallet=~\"${wallet_filter}\"}[1m]))  * 1e9",
@@ -158,7 +212,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -172,7 +226,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM(rate(spr_valid_share_diff_counter{wallet=~\"${wallet_filter}\"}[1d])) * 1e9",
@@ -188,7 +242,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -235,6 +289,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -242,17 +297,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "value"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -269,7 +324,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -304,6 +359,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -311,17 +367,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM (spr_balance_by_wallet_gauge{wallet=~\"${wallet_filter}\"}) * ${show_balances}",
@@ -336,7 +392,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -373,6 +429,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -380,17 +437,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM(increase(spr_blocks_mined{wallet=~\"${wallet_filter}\"}[${resolution}]))",
@@ -405,7 +462,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -439,6 +496,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -446,17 +504,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -473,7 +531,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -507,6 +565,7 @@
         "graphMode": "area",
         "justifyMode": "center",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -514,17 +573,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -541,7 +600,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -575,6 +634,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -582,17 +642,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -609,7 +669,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -644,6 +704,7 @@
         "graphMode": "area",
         "justifyMode": "center",
         "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -651,17 +712,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "value"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -676,7 +737,10 @@
       "type": "stat"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -707,6 +771,7 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "last"
@@ -714,17 +779,17 @@
           "fields": "",
           "values": false
         },
-        "text": {
-          "valueSize": 64
-        },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.2.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -741,7 +806,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -751,11 +816,13 @@
             "mode": "fixed"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -764,6 +831,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -900,11 +968,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -919,7 +988,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -934,7 +1003,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -948,13 +1017,12 @@
         }
       ],
       "title": "Blocks",
-      "transformations": [],
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1003,11 +1071,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(increase(spr_blocks_mined{wallet=~\"${wallet_filter}\"}[$resolution])) by (worker)",
@@ -1022,7 +1091,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1070,11 +1139,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(increase(spr_valid_share_diff_counter{wallet=~\"${wallet_filter}\"}[$resolution])) by (worker)",
@@ -1089,7 +1159,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1097,11 +1167,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1110,6 +1182,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1191,11 +1264,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM(rate(spr_valid_share_diff_counter{wallet=~\"${wallet_filter}\"}[$resolution]))",
@@ -1207,7 +1281,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(rate(spr_valid_share_diff_counter{wallet=~\"${wallet_filter}\"}[$resolution])) by (worker)",
@@ -1223,7 +1297,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1231,11 +1305,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1244,6 +1320,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1302,11 +1379,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(rate(spr_valid_share_counter{wallet=~\"${wallet_filter}\"}[$resolution]) * 60) by (worker)",
@@ -1321,7 +1399,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1329,11 +1407,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1342,6 +1422,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1402,11 +1483,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM BY (miner) (rate(spr_valid_share_diff_counter{wallet=~\"${wallet_filter}\"}[$resolution]))",
@@ -1421,7 +1503,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1429,11 +1511,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1442,6 +1526,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1541,11 +1626,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM BY(worker, type) (rate(spr_invalid_share_counter{wallet=~\"${wallet_filter}\"}[${resolution}]))",
@@ -1557,7 +1643,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "increase(spr_invalid_share_counter{wallet=~\"${wallet_filter}\"}[$__interval])",
@@ -1573,7 +1659,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1581,11 +1667,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1594,6 +1682,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1615,7 +1704,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1660,11 +1750,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "spr_estimated_network_hashrate_gauge",
@@ -1675,7 +1766,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "spr_network_difficulty_gauge / 1e9",
@@ -1689,18 +1780,23 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1709,6 +1805,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1730,7 +1827,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1756,11 +1854,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "AVG BY(wallet) (spr_balance_by_wallet_gauge{wallet=~\"${wallet_filter}\"}) *  ${show_balances}",
@@ -1775,7 +1874,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1783,11 +1882,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1796,6 +1897,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1817,7 +1919,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1849,11 +1952,12 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "SUM(delta(spr_network_block_count[1m])) / 60",
@@ -1868,7 +1972,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "wFbInMnVk"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1876,11 +1980,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1889,6 +1995,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1911,7 +2018,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -1939,12 +2047,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "9.1.5",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "wFbInMnVk"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1960,8 +2068,7 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 37,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
@@ -1970,11 +2077,9 @@
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": false,
           "text": "1d",
           "value": "1d"
         },
-        "hide": 0,
         "name": "resolution",
         "options": [
           {
@@ -2059,52 +2164,39 @@
           }
         ],
         "query": "1m,5m,10m,15m,30m,1h,2h,3h,6h,12h,1d,2d,3d,7d,14d,30d",
-        "queryValue": "",
         "refresh": 2,
-        "skipUrlSync": false,
         "type": "interval"
       },
       {
         "current": {
-          "selected": true,
-          "text": "show",
+          "text": "1",
           "value": "1"
         },
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "show_balances",
         "options": [
           {
             "selected": true,
-            "text": "show",
+            "text": "1",
             "value": "1"
           },
           {
             "selected": false,
-            "text": "hide",
+            "text": "0",
             "value": "0"
           }
         ],
         "query": "1,0",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "spectre:qzccsk5fwrh3c88460a0a99srnmhwf5gy49dk2e96935px29u5uks92guhf98",
-          "value": "spectre:qzccsk5fwrh3c88460a0a99srnmhwf5gy49dk2e96935px29u5uks92guhf98"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "wFbInMnVk"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(spr_balance_by_wallet_gauge, wallet)",
-        "hide": 0,
         "includeAll": true,
-        "multi": false,
         "name": "wallet_filter",
         "options": [],
         "query": {
@@ -2113,24 +2205,18 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "(86400*1)",
-          "value": "(86400*1)"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "wFbInMnVk"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "query_result(label_replace(label_replace(label_replace(label_replace(vector(1),\"resolution_s\",\"${resolution}\",\"\",\"\"),\"resolution_s\",\"(60*$1)\",\"resolution_s\",\"([0-9]+)m\"),\"resolution_s\",\"(3600*$1)\",\"resolution_s\",\"([0-9]+)h\"),\"resolution_s\",\"(86400*$1)\",\"resolution_s\",\"([0-9]+)d\"))",
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "resolution_s",
         "options": [],
         "query": {
@@ -2139,8 +2225,6 @@
         },
         "refresh": 1,
         "regex": "/^.*resolution_s=\"(?<value>[^\"]+)\".*$/",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       }
     ]
@@ -2153,6 +2237,6 @@
   "timezone": "",
   "title": "SPRB Monitoring",
   "uid": "x7cE7G74k",
-  "version": 44,
+  "version": 13,
   "weekStart": ""
 }
