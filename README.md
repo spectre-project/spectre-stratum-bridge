@@ -23,7 +23,7 @@ Shares-based work allocation with miner-like periodic stat output:
  Total          |      12.62KH/s |          6/0/0 |            6 |   17h36m46s
 -------------------------------------------------------------------------------
  Network Hashrate: 138.40MH/s
-======================================================== spr_bridge_v0.3.16 ===
+======================================================== spr_bridge_v0.3.18 ===
 ```
 
 ## Variable difficulty engine (vardiff)
@@ -68,7 +68,7 @@ ease of use.
 
 ## Build from source (native executable)
 
-Install go 1.19 or later using whatever package manager is approprate
+Install go 1.23 or later using whatever package manager is approprate
 for your system, or from [https://go.dev/doc/install](https://go.dev/doc/install).
 
 ```
