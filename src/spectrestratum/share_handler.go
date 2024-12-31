@@ -189,7 +189,7 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 	stats := sh.getCreateStats(ctx)
 	if err := sh.checkStales(ctx, submitInfo); err != nil {
 		if err == ErrDupeShare {
-			ctx.Logger.Warn("duplicate share: "+submitInfo.noncestr)
+			ctx.Logger.Warn("duplicate share: " + submitInfo.noncestr)
 			RecordDupeShare(ctx)
 			stats.InvalidShares.Add(1)
 			sh.overall.InvalidShares.Add(1)
