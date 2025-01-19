@@ -111,20 +111,19 @@ func SendExtranonce(ctx *StratumContext) {
 	}
 }
 
-var walletRegex = regexp.MustCompile("spectre:[a-z0-9]+")
+var walletRegex = regexp.MustCompile("(spectre|spectretest):[a-z0-9]+")
 
 func CleanWallet(in string) (string, error) {
-	_, err := util.DecodeAddress(in, util.Bech32PrefixSpectre)
-	if err == nil {
-		return in, nil // good to go
-	}
-	if !strings.HasPrefix(in, "spectre:") {
-		return CleanWallet("spectre:" + in)
+	if !strings.HasPrefix(in, "spectre:") && !strings.HasPrefix(in, "spectretest:") {
+		in = "spectre:" + in
 	}
 
-	// has spectre: prefix but other weirdness somewhere
-	if walletRegex.MatchString(in) {
-		return in[0:69], nil
+	if _, err := util.DecodeAddress(in, util.Bech32PrefixSpectre); err == nil {
+		return in, nil // valid spectre address
 	}
-	return "", errors.New("unable to coerce wallet to valid spectre address")
+	if _, err := util.DecodeAddress(in, util.Bech32PrefixSpectreTest); err == nil {
+		return in, nil // valid spectretest address
+	}
+
+	return "", errors.New("invalid wallet address")
 }
